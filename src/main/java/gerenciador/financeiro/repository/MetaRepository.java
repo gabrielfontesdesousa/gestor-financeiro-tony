@@ -1,6 +1,5 @@
 package gerenciador.financeiro.repository;
 
-import gerenciador.financeiro.model.Categoria;
 import gerenciador.financeiro.model.Meta;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
