@@ -6,12 +6,17 @@ import gerenciador.financeiro.enums.TipoTransacao;
 import java.time.LocalDateTime;
 
 public class Transacao {
+    private Integer id;
     private Double Valor;
     private LocalDateTime dtHora;
     private StatusTransacao status;
     private String descricao;
     private Categoria categoria;
     private TipoTransacao tipoTransacao;
+
+    public Integer getId() {
+        return id;
+    }
 
     @Override
     public String toString() {

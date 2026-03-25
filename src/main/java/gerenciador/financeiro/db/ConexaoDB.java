@@ -1,14 +1,27 @@
 package gerenciador.financeiro.db;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import org.apache.commons.dbcp2.BasicDataSource;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 public class ConexaoDB {
-    private static final String URL = "jdbc:h2:mem:financeiro;DB_CLOSE_DELAY=-1";
-    private static final String USER = "sa";
-    private static final String PASSWORD = "";
 
-    public static Connection getConexao() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+    private final JdbcTemplate jdbcTemplate;
+    private final BasicDataSource basicDataSource;
+
+    public ConexaoDB() {
+        BasicDataSource basicDataSource = new BasicDataSource();
+        basicDataSource.setUrl("jdbc:h2:mem:db_financeiro");
+        basicDataSource.setUsername("sa");
+        basicDataSource.setPassword("");
+
+        this.basicDataSource = basicDataSource;
+        this.jdbcTemplate = new JdbcTemplate(basicDataSource);
+    }
+
+    public BasicDataSource getBasicDataSource() {
+        return basicDataSource;
+    }
+
+    public JdbcTemplate getJdbcTemplate() {
+        return jdbcTemplate;
     }
 }

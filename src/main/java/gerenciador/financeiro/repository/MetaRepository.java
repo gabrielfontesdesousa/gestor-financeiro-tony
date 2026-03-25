@@ -1,0 +1,44 @@
+package gerenciador.financeiro.repository;
+
+import gerenciador.financeiro.model.Categoria;
+import gerenciador.financeiro.model.Meta;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.util.List;
+
+public class MetaRepository {
+
+    private final JdbcTemplate template;
+
+    public MetaRepository(JdbcTemplate template) {
+        this.template = template;
+    }
+
+    public void salvar(Meta meta) {
+        String sql = "INSERT INTO meta VALUES (DEFAULT, ?, ?, ?)";
+        template.update(sql, meta.getValorFinal(), meta.getValorAtual(), meta.getDtFinal());
+    }
+
+    public List<Meta> listarTodas() {
+        String sql = "SELECT * FROM meta;";
+        List<Meta> metaList = template.query(sql, new BeanPropertyRowMapper<>(Meta.class));
+        return metaList;
+    }
+
+    public Meta buscarPorId(Integer id) {
+        String sql = "SELECT * FROM meta WHERE id = ?";
+        Meta meta = template.queryForObject(sql, new BeanPropertyRowMapper<>(Meta.class), id);
+        return meta;
+    }
+
+    public void atualizar(Integer id, Meta metaAtualizada) {
+        String sql = "UPTADE meta SET valor_meta = ?, valor_atual = ?, data_limite = ? WHERE id = ?";
+        template.update(sql, metaAtualizada.getValorFinal(), metaAtualizada.getValorAtual(), metaAtualizada.getDtFinal(), id);
+    }
+
+    public void atualizarProgresso(Integer id, Double novoValorAtual){
+        String sql = "UPTADE meta SET valor_atual = ? WHERE id = ?";
+        template.update(sql, novoValorAtual, id);
+    }
+}

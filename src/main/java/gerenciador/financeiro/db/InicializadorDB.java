@@ -1,20 +1,17 @@
 package gerenciador.financeiro.db;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.sql.Connection;
-import java.sql.Statement;
 import java.util.stream.Collectors;
 
 public class InicializadorDB {
 
+    public static void inicializar(ConexaoDB conexaoDB) {
 
-    public static void inicializar() {
-        try (
-                Connection conexao = ConexaoDB.getConexao();
-                Statement statement = conexao.createStatement()
-        ) {
-            InputStream inputStream = InicializadorDB.class.getResourceAsStream("/gerenciador/financeiro/db/schema.sql");
+        try {
+            InputStream inputStream = InicializadorDB.class
+                    .getResourceAsStream("/gerenciador/financeiro/db/schema.sql");
 
             if (inputStream == null) {
                 throw new RuntimeException("Arquivo schema.sql não encontrado!");
@@ -25,16 +22,16 @@ public class InicializadorDB {
                     .collect(Collectors.joining("\n"));
 
             String[] comandos = sql.split(";");
+
             for (String comando : comandos) {
                 if (!comando.trim().isEmpty()) {
-                    statement.execute(comando);
+                    conexaoDB.getJdbcTemplate().execute(comando);
                 }
             }
 
-            System.out.println("Banco de dados inicializado com sucesso!");
+            System.out.println("Banco inicializado com sucesso!");
 
         } catch (Exception e) {
-            System.out.println("Erro ao inicializar o banco: " + e.getMessage());
             e.printStackTrace();
         }
     }
