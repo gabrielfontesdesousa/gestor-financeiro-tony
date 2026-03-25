@@ -1,4 +1,11 @@
 package gerenciador.financeiro;
+import gerenciador.financeiro.enums.StatusTransacao;
+import gerenciador.financeiro.enums.TipoTransacao;
+import gerenciador.financeiro.model.Categoria;
+import gerenciador.financeiro.model.LogTransacao;
+import gerenciador.financeiro.model.Meta;
+import gerenciador.financeiro.model.Transacao;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

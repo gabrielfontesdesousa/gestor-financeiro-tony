@@ -1,4 +1,4 @@
-package gerenciador.financeiro;
+package gerenciador.financeiro.model;
 
 import java.time.LocalDate;
 

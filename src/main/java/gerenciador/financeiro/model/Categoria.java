@@ -1,4 +1,4 @@
-package gerenciador.financeiro;
+package gerenciador.financeiro.model;
 
 public class Categoria {
     private String nome;

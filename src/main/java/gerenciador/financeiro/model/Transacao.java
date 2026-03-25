@@ -1,4 +1,7 @@
-package gerenciador.financeiro;
+package gerenciador.financeiro.model;
+
+import gerenciador.financeiro.enums.StatusTransacao;
+import gerenciador.financeiro.enums.TipoTransacao;
 
 import java.time.LocalDateTime;
 
