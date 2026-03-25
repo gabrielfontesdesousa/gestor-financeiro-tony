@@ -32,8 +32,8 @@ public class MetaRepository {
     }
 
     public void atualizar(Integer id, Meta metaAtualizada) {
-        String sql = "UPTADE meta SET valor_meta = ?, valor_atual = ?, data_limite = ? WHERE id = ?";
-        template.update(sql, metaAtualizada.getValorFinal(), metaAtualizada.getValorAtual(), metaAtualizada.getDtFinal(), id);
+        String sql = "UPTADE meta SET valor_meta = ?, data_limite = ? WHERE id = ?";
+        template.update(sql, metaAtualizada.getValorFinal(), metaAtualizada.getDtFinal(), id);
     }
 
     public void atualizarProgresso(Integer id, Double novoValorAtual){

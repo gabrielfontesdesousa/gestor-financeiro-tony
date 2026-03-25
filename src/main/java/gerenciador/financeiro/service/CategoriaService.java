@@ -28,6 +28,9 @@ public class CategoriaService {
     }
 
     public List<Categoria> listarCategorias() {
+        if (repository.listarTodas().isEmpty()){
+            throw new RuntimeException("Não existem categorias cadastradas");
+        }
         return repository.listarTodas();
     }
 
@@ -35,7 +38,7 @@ public class CategoriaService {
         try {
             return repository.buscarPorId(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new RuntimeException("Categoria com ID " + id + " não encontrada");
+            throw new RuntimeException("Categoria com ID " + id + " não existe");
         }
     }
 
