@@ -25,7 +25,6 @@ public class InicializadorDB {
                     .collect(Collectors.joining("\n"));
 
             String[] comandos = sql.split(";");
-
             for (String comando : comandos) {
                 if (!comando.trim().isEmpty()) {
                     statement.execute(comando);
