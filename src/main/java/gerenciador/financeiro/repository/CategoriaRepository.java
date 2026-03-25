@@ -43,13 +43,10 @@ public class CategoriaRepository {
 
     }
 
+
+
     public void deletar(Integer id){
         String sql = "DELETE FROM categoria WHERE id = ?";
         template.update(sql, id);
     }
-
-
-
-
-
 }
