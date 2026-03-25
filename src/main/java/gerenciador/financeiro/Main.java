@@ -1,46 +1,210 @@
 package gerenciador.financeiro;
-import gerenciador.financeiro.enums.StatusTransacao;
-import gerenciador.financeiro.enums.TipoTransacao;
-import gerenciador.financeiro.model.Categoria;
-import gerenciador.financeiro.model.LogTransacao;
-import gerenciador.financeiro.model.Meta;
-import gerenciador.financeiro.model.Transacao;
+import java.util.Scanner;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 public class Main {
+
+    static Scanner leitor = new Scanner(System.in);
+
     public static void main(String[] args) {
-        Categoria categoria = new Categoria("Salario", "Salário Empresa");
-        Categoria categoria1 = new Categoria("Lazer", "Parque");
-        System.out.println(categoria1.toString() + "\n" + categoria.toString());
-        List<LogTransacao> logTransacoes = new ArrayList<LogTransacao>();
-        Transacao t1 = null;
+        menuPrincipal();
+    }
 
-        try{
-            t1 = new Transacao(1000.00, LocalDateTime.now(), "Compra Parque", categoria1, TipoTransacao.DESPESA);
-            logTransacoes.add(new LogTransacao( LocalDateTime.now(), "Sucesso na operação", StatusTransacao.OPERACAO_CONCLUIDA));
-        } catch (Exception e){
-            logTransacoes.add(new LogTransacao( LocalDateTime.now(), e.getMessage(), StatusTransacao.FALHA));
-        }
+    public static void menuPrincipal() {
+        boolean executando = true;
 
-        System.out.println(t1.toString());
-        for (int i = 0; i < logTransacoes.size(); i++) {
-            System.out.println(logTransacoes.get(i).toString());
-        }
-        Meta m1 = new Meta(3000.00, 2000.00, LocalDate.of(2027,01,01));
-        System.out.println(m1.toString());
-        String mensagem = "[";
-        Double porcentagemAtingida = m1.porcentagemAtingido() / 10;
-        for (int i = 0; i < porcentagemAtingida; i++) {
-            mensagem += "######";
-        }
-        for (int i = 0; i < 10 - porcentagemAtingida; i++){
-            mensagem += "......";
+        while (executando) {
+            limparConsole();
+            System.out.println("=================================");
+            System.out.println("     GERENCIADOR FINANCEIRO");
+            System.out.println("=================================");
+            System.out.println("1 - Categorias");
+            System.out.println("2 - Transações");
+            System.out.println("3 - Metas");
+            System.out.println("0 - Sair");
+            System.out.print("Escolha uma opção: ");
 
+            int opcao = leitor.nextInt();
+            leitor.nextLine();
+
+            switch (opcao) {
+                case 1:
+                    telaCategorias();
+                    break;
+                case 2:
+                    telaTransacoes();
+                    break;
+                case 3:
+                    telaMetas();
+                    break;
+                case 0:
+                    executando = false;
+                    System.out.println("Saindo do sistema...");
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
+                    pausar();
+            }
         }
-        mensagem += "]";
-        System.out.println(mensagem);
+    }
+
+    public static void telaCategorias() {
+        boolean voltar = false;
+
+        while (!voltar) {
+            limparConsole();
+            System.out.println("=================================");
+            System.out.println("         MENU CATEGORIAS");
+            System.out.println("=================================");
+            System.out.println("1 - Cadastrar categoria");
+            System.out.println("2 - Listar categorias");
+            System.out.println("3 - Buscar por nome");
+            System.out.println("4 - Atualizar categoria");
+            System.out.println("5 - Deletar categoria");
+            System.out.println("0 - Voltar");
+            System.out.print("Escolha uma opção: ");
+
+            int opcao = leitor.nextInt();
+            leitor.nextLine();
+
+            switch (opcao) {
+                case 1:
+                    System.out.println(">>> Cadastrar categoria");
+                    // chamar service aqui
+                    pausar();
+                    break;
+                case 2:
+                    System.out.println(">>> Listar categorias");
+                    // chamar service aqui
+                    pausar();
+                    break;
+                case 3:
+                    System.out.println(">>> Buscar categoria por nome");
+                    // chamar service aqui
+                    pausar();
+                    break;
+                case 4:
+                    System.out.println(">>> Atualizar categoria");
+                    // chamar service aqui
+                    pausar();
+                    break;
+                case 5:
+                    System.out.println(">>> Deletar categoria");
+                    // chamar service aqui
+                    pausar();
+                    break;
+                case 0:
+                    voltar = true;
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
+                    pausar();
+            }
+        }
+    }
+
+    public static void telaTransacoes() {
+        boolean voltar = false;
+
+        while (!voltar) {
+            limparConsole();
+            System.out.println("=================================");
+            System.out.println("         MENU TRANSAÇÕES");
+            System.out.println("=================================");
+            System.out.println("1 - Cadastrar transação");
+            System.out.println("2 - Listar transações");
+            System.out.println("3 - Buscar por ID");
+            System.out.println("4 - Listar por tipo");
+            System.out.println("5 - Deletar transação");
+            System.out.println("0 - Voltar");
+            System.out.print("Escolha uma opção: ");
+
+            int opcao = leitor.nextInt();
+            leitor.nextLine();
+
+            switch (opcao) {
+                case 1:
+                    System.out.println(">>> Cadastrar transação");
+                    pausar();
+                    break;
+                case 2:
+                    System.out.println(">>> Listar transações");
+                    pausar();
+                    break;
+                case 3:
+                    System.out.println(">>> Buscar transação por ID");
+                    pausar();
+                    break;
+                case 4:
+                    System.out.println(">>> Listar transações por tipo");
+                    pausar();
+                    break;
+                case 5:
+                    System.out.println(">>> Deletar transação");
+                    pausar();
+                    break;
+                case 0:
+                    voltar = true;
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
+                    pausar();
+            }
+        }
+    }
+
+    public static void telaMetas() {
+        boolean voltar = false;
+
+        while (!voltar) {
+            limparConsole();
+            System.out.println("=================================");
+            System.out.println("           MENU METAS");
+            System.out.println("=================================");
+            System.out.println("1 - Cadastrar meta");
+            System.out.println("2 - Listar metas");
+            System.out.println("3 - Atualizar progresso");
+            System.out.println("4 - Deletar meta");
+            System.out.println("0 - Voltar");
+            System.out.print("Escolha uma opção: ");
+
+            int opcao = leitor.nextInt();
+            leitor.nextLine();
+
+            switch (opcao) {
+                case 1:
+                    System.out.println(">>> Cadastrar meta");
+                    pausar();
+                    break;
+                case 2:
+                    System.out.println(">>> Listar metas");
+                    pausar();
+                    break;
+                case 3:
+                    System.out.println(">>> Atualizar progresso da meta");
+                    pausar();
+                    break;
+                case 4:
+                    System.out.println(">>> Deletar meta");
+                    pausar();
+                    break;
+                case 0:
+                    voltar = true;
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
+                    pausar();
+            }
+        }
+    }
+
+    public static void pausar() {
+        System.out.println("\nPressione ENTER para continuar...");
+        leitor.nextLine();
+    }
+
+    public static void limparConsole() {
+        for (int i = 0; i < 30; i++) {
+            System.out.println();
+        }
     }
 }

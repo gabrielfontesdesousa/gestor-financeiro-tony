@@ -1,5 +1,4 @@
 package gerenciador.financeiro.db;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -9,9 +8,10 @@ import java.util.stream.Collectors;
 
 public class InicializadorDB {
 
+
     public static void inicializar() {
         try (
-                Connection conexao = db.ConexaoDB.getConexao();
+                Connection conexao = ConexaoDB.getConexao();
                 Statement statement = conexao.createStatement()
         ) {
             InputStream inputStream = InicializadorDB.class.getResourceAsStream("/gerenciador/financeiro/db/schema.sql");
