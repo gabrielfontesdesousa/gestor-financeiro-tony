@@ -3,6 +3,15 @@ package gerenciador.financeiro.model;
 public class Categoria {
     private String nome;
     private String desc;
+    private Integer categoriaId;
+
+    public Integer getCategoriaId() {
+        return categoriaId;
+    }
+
+    public void setCategoriaId(Integer categoriaId) {
+        this.categoriaId = categoriaId;
+    }
 
     @Override
     public String toString() {
