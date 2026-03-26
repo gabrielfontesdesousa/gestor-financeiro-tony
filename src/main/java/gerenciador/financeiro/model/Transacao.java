@@ -7,43 +7,39 @@ import java.time.LocalDateTime;
 
 public class Transacao {
     private Integer id;
-    private Double Valor;
+    private Double valor;
     private LocalDateTime dtHora;
     private StatusTransacao status;
     private String descricao;
     private Categoria categoria;
     private TipoTransacao tipoTransacao;
+    private Integer categoriaId;
 
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public String toString() {
-        return "Transacao{" +
-                "Valor=" + Valor +
-                ", dtHora=" + dtHora +
-                ", status=" + status +
-                ", descricao='" + descricao + '\'' +
-                ", categoria=" + categoria +
-                ", tipoTransacao=" + tipoTransacao +
-                '}';
+    public Transacao() {
     }
 
     public Transacao(Double valor, LocalDateTime dtHora, String descricao, Categoria categoria, TipoTransacao tipoTransacao) {
-        Valor = valor;
+        this.valor = valor;
         this.dtHora = dtHora;
         this.descricao = descricao;
         this.categoria = categoria;
         this.tipoTransacao = tipoTransacao;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Double getValor() {
-        return Valor;
+        return valor;
     }
 
     public void setValor(Double valor) {
-        Valor = valor;
+        this.valor = valor;
     }
 
     public LocalDateTime getDtHora() {
@@ -85,5 +81,26 @@ public class Transacao {
     public void setTipoTransacao(TipoTransacao tipoTransacao) {
         this.tipoTransacao = tipoTransacao;
     }
-}
 
+    public Integer getCategoriaId() {
+        return categoriaId;
+    }
+
+    public void setCategoriaId(Integer categoriaId) {
+        this.categoriaId = categoriaId;
+    }
+
+    @Override
+    public String toString() {
+        return "Transacao{" +
+                "id=" + id +
+                ", valor=" + valor +
+                ", dtHora=" + dtHora +
+                ", status=" + status +
+                ", descricao='" + descricao + '\'' +
+                ", categoria=" + categoria +
+                ", tipoTransacao=" + tipoTransacao +
+                ", categoriaId=" + categoriaId +
+                '}';
+    }
+}

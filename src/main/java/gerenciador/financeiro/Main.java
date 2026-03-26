@@ -1,11 +1,17 @@
 package gerenciador.financeiro;
+import gerenciador.financeiro.db.ConexaoDB;
+import gerenciador.financeiro.db.InicializadorDB;
+import gerenciador.financeiro.service.TransacaoService;
+
 import java.util.Scanner;
 
 public class Main {
-
     static Scanner leitor = new Scanner(System.in);
+    static ConexaoDB conexaoDB = new ConexaoDB();
+    static TransacaoService transacaoService = new TransacaoService(conexaoDB);
 
     public static void main(String[] args) {
+        InicializadorDB.inicializar(conexaoDB);
         menuPrincipal();
     }
 
@@ -69,27 +75,22 @@ public class Main {
             switch (opcao) {
                 case 1:
                     System.out.println(">>> Cadastrar categoria");
-                    // chamar service aqui
                     pausar();
                     break;
                 case 2:
                     System.out.println(">>> Listar categorias");
-                    // chamar service aqui
                     pausar();
                     break;
                 case 3:
                     System.out.println(">>> Buscar categoria por nome");
-                    // chamar service aqui
                     pausar();
                     break;
                 case 4:
                     System.out.println(">>> Atualizar categoria");
-                    // chamar service aqui
                     pausar();
                     break;
                 case 5:
                     System.out.println(">>> Deletar categoria");
-                    // chamar service aqui
                     pausar();
                     break;
                 case 0:

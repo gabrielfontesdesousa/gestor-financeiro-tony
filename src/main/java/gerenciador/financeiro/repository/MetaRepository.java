@@ -40,4 +40,9 @@ public class MetaRepository {
         String sql = "UPTADE meta SET valor_atual = ? WHERE id = ?";
         template.update(sql, novoValorAtual, id);
     }
+
+    public void deletar(Integer id) {
+        String sql = "DELETE FROM meta WHERE id = ?";
+        template.update(sql, id);
+    }
 }
