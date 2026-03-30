@@ -14,10 +14,10 @@ CREATE TABLE transacao
 (
     id           INT AUTO_INCREMENT PRIMARY KEY,
     valor        DECIMAL(10, 2) NOT NULL,
-    data_hora    TIMESTAMP      NOT NULL,
+    data_hora    TIMESTAMP,
     descricao    VARCHAR(255)   NOT NULL,
     tipo         VARCHAR(20)    NOT NULL,
-    categoria_id INT            NOT NULL,
+    categoria_id INT,
     CONSTRAINT fk_transacao_categoria
         FOREIGN KEY (categoria_id) REFERENCES categoria (id)
 );

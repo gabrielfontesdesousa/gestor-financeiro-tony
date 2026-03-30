@@ -5,10 +5,6 @@ public class Categoria {
     private String descricao;
     private Integer id;
 
-    public Categoria() {
-
-    }
-
     public Integer getId() {
         return id;
     }
@@ -25,7 +21,8 @@ public class Categoria {
                 "nome: " + nome + '\n' +
                 "descricao: " + descricao;
     }
-
+    public Categoria() {
+    }
     public Categoria(String nome, String desc) {
         this.nome = nome;
         this.descricao = desc;
