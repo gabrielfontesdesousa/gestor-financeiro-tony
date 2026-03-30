@@ -4,8 +4,10 @@ import gerenciador.financeiro.db.InicializadorDB;
 import gerenciador.financeiro.enums.TipoTransacao;
 import gerenciador.financeiro.model.Categoria;
 import gerenciador.financeiro.model.Transacao;
+import gerenciador.financeiro.repository.CategoriaRepository;
 import gerenciador.financeiro.repository.LogTransacaoRepository;
 import gerenciador.financeiro.repository.TransacaoRepository;
+import gerenciador.financeiro.service.CategoriaService;
 import gerenciador.financeiro.service.LogTransacaoService;
 import gerenciador.financeiro.service.TransacaoService;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,6 +21,11 @@ public class Main {
     static JdbcTemplate jdbc;
     static TransacaoService transacaoService = new TransacaoService( new TransacaoRepository(conexaoDB.getJdbcTemplate()));
     static LogTransacaoService logTransacaoService = new LogTransacaoService(new LogTransacaoRepository(jdbc));
+    static CategoriaService categoriaService =
+            new CategoriaService(
+                    new CategoriaRepository(conexaoDB.getJdbcTemplate())
+            );
+
 
     public static void main(String[] args) {
         InicializadorDB.inicializar(conexaoDB);
@@ -73,9 +80,10 @@ public class Main {
             System.out.println("=================================");
             System.out.println("1 - Cadastrar categoria");
             System.out.println("2 - Listar categorias");
-            System.out.println("3 - Buscar por nome");
-            System.out.println("4 - Atualizar categoria");
-            System.out.println("5 - Deletar categoria");
+            System.out.println("3 - Buscar por id");
+            System.out.println("4 - Buscar por nome");
+            System.out.println("5 - Atualizar categoria");
+            System.out.println("6 - Deletar categoria");
             System.out.println("0 - Voltar");
             System.out.print("Escolha uma opção: ");
 
@@ -85,22 +93,67 @@ public class Main {
             switch (opcao) {
                 case 1:
                     System.out.println(">>> Cadastrar categoria");
+                    System.out.println("Nome da categoria:");
+                    String nome = leitor.nextLine();
+                    System.out.println("Descrição: ");
+                    String desc = leitor.nextLine();
+
+                    Categoria categoria = new Categoria(nome, desc);
+                    categoriaService.cadastrarCategoria(categoria);
+                    System.out.println("Categoria Registrada com sucesso!");
                     pausar();
                     break;
                 case 2:
                     System.out.println(">>> Listar categorias");
+                    categoriaService.listarCategorias().forEach(c -> {
+                        System.out.println("ID: " + c.getId());
+                        System.out.println("Nome: " + c.getNome());
+                        System.out.println("Descrição: " + c.getDescricao());
+                        System.out.println("------------------");
+                    });
                     pausar();
                     break;
                 case 3:
-                    System.out.println(">>> Buscar categoria por nome");
+                    System.out.println(">>> Buscar categoria por id");
+                    System.out.println("Informe o id que deseja buscar: ");
+                    Integer id = leitor.nextInt();
+                    leitor.nextLine();
+                    categoria = categoriaService.buscarCategoriaPorId(id);
+                    System.out.println(categoria.toString());
                     pausar();
                     break;
                 case 4:
-                    System.out.println(">>> Atualizar categoria");
+                    System.out.println(">>> Buscar categoria por nome");
+                    System.out.println("Informe o nome da categoria: ");
+                    String buscarNome = leitor.nextLine();
+                    categoria = categoriaService.buscarCategoriaPorNome(buscarNome);
+                    System.out.println(categoria.toString());
                     pausar();
                     break;
                 case 5:
+                    System.out.println(">>> Atualizar categoria");
+                    System.out.println("Informe o ID da categoria a ser atualizada: ");
+                    id = leitor.nextInt();
+                    leitor.nextLine();
+                    System.out.println("Novo nome:");
+                    String novoNome = leitor.nextLine();
+                    System.out.println("Nova descrição:");
+                    String novaDescricao = leitor.nextLine();
+                    categoria = categoriaService.buscarCategoriaPorId(id);
+                    categoria.setNome(novoNome);
+                    categoria.setDescricao(novaDescricao);
+                    categoriaService.atualizarCategoria(id, categoria);
+                    System.out.println(categoria.toString());
+                    System.out.println("Categoria atualizada");
+                    pausar();
+                    break;
+                case 6:
                     System.out.println(">>> Deletar categoria");
+                    System.out.println("Informe o ID da categoria a ser deletada: ");
+                    id = leitor.nextInt();
+                    leitor.nextLine();
+                    categoriaService.removerCategoria(id);
+                    System.out.println("Categoria removida!");
                     pausar();
                     break;
                 case 0:
@@ -112,7 +165,6 @@ public class Main {
             }
         }
     }
-
     public static void telaTransacoes() {
         boolean voltar = false;
 
