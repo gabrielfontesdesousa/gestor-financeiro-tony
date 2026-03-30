@@ -19,13 +19,13 @@ public class CategoriaRepository {
     }
 
     public List<Categoria> listarTodas(){
-        String sql = "SELECT * FROM categoria;";
+        String sql = "SELECT nome, descricao FROM categoria;";
         List<Categoria> categoriaList = template.query(sql, new BeanPropertyRowMapper<>(Categoria.class));
         return categoriaList;
     }
 
     public Categoria buscarPorId(Integer id){
-        String sql = "SELECT * FROM categoria WHERE id = ?";
+        String sql = "SELECT nome, descricao FROM categoria WHERE id = ?";
         Categoria categoria = template.queryForObject(sql, new BeanPropertyRowMapper<>(Categoria.class), id);
         return categoria;
     }
