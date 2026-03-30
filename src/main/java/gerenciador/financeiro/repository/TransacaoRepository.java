@@ -33,7 +33,7 @@ public class TransacaoRepository {
                     transacao.getStatus().name(),
                     transacao.getDescricao(),
                     transacao.getTipoTransacao().name(),
-                    transacao.getCategoria().getCategoriaId()
+                    transacao.getCategoria().getId()
             );
 
             new LogTransacao(LocalDateTime.now(), "INSERT SUCCESS", StatusTransacao.OPERACAO_CONCLUIDA);
@@ -130,7 +130,7 @@ public class TransacaoRepository {
                     transacao.getStatus().name(),
                     transacao.getDescricao(),
                     transacao.getTipoTransacao().name(),
-                    transacao.getCategoria().getCategoriaId(),
+                    transacao.getCategoria().getId(),
                     transacao.getId()
             );
 

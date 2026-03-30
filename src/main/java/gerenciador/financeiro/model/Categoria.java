@@ -2,36 +2,41 @@ package gerenciador.financeiro.model;
 
 public class Categoria {
     private String nome;
-    private String desc;
-    private Integer categoriaId;
+    private String descricao;
+    private Integer id;
 
-    public Integer getCategoriaId() {
-        return categoriaId;
+    public Categoria() {
+
     }
 
-    public void setCategoriaId(Integer categoriaId) {
-        this.categoriaId = categoriaId;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     @Override
     public String toString() {
-        return "Categoria{" +
-                "nome='" + nome + '\'' +
-                ", desc='" + desc + '\'' +
-                '}';
+        return "Categoria:"
+                + '\n' +
+                "Id: " + id + '\n' +
+                "nome: " + nome + '\n' +
+                "descricao: " + descricao;
     }
 
     public Categoria(String nome, String desc) {
         this.nome = nome;
-        this.desc = desc;
+        this.descricao = desc;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public String getNome() {
