@@ -23,4 +23,28 @@ public class LogTransacao {
                 ", status=" + status +
                 '}';
     }
+
+    public LocalDateTime getDtHora() {
+        return dtHora;
+    }
+
+    public void setDtHora(LocalDateTime dtHora) {
+        this.dtHora = dtHora;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public StatusTransacao getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusTransacao status) {
+        this.status = status;
+    }
 }

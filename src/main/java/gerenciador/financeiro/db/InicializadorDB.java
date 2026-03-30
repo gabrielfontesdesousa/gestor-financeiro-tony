@@ -6,11 +6,12 @@ import java.io.InputStreamReader;
 import java.util.stream.Collectors;
 
 public class InicializadorDB {
+
     public static void inicializar(ConexaoDB conexaoDB) {
 
-        try {
-            InputStream inputStream = InicializadorDB.class
-                    .getResourceAsStream("src/main/java/gerenciador/financeiro/db/schema.sql");
+        try
+            ( InputStream inputStream = InicializadorDB.class
+                    .getResourceAsStream("/schema.sql")){
 
             if (inputStream == null) {
                 throw new RuntimeException("Arquivo schema.sql não encontrado!");

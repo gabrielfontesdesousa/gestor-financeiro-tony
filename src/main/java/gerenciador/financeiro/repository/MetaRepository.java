@@ -7,9 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.List;
 
 public class MetaRepository {
-
     private final JdbcTemplate template;
-
     public MetaRepository(JdbcTemplate template) {
         this.template = template;
     }

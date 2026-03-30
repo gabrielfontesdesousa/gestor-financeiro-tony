@@ -1,14 +1,24 @@
 package gerenciador.financeiro;
 import gerenciador.financeiro.db.ConexaoDB;
 import gerenciador.financeiro.db.InicializadorDB;
+import gerenciador.financeiro.enums.TipoTransacao;
+import gerenciador.financeiro.model.Categoria;
+import gerenciador.financeiro.model.Transacao;
+import gerenciador.financeiro.repository.LogTransacaoRepository;
+import gerenciador.financeiro.repository.TransacaoRepository;
+import gerenciador.financeiro.service.LogTransacaoService;
 import gerenciador.financeiro.service.TransacaoService;
+import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class Main {
     static Scanner leitor = new Scanner(System.in);
     static ConexaoDB conexaoDB = new ConexaoDB();
-    static TransacaoService transacaoService = new TransacaoService(conexaoDB);
+    static JdbcTemplate jdbc;
+    static TransacaoService transacaoService = new TransacaoService( new TransacaoRepository(conexaoDB.getJdbcTemplate()));
+    static LogTransacaoService logTransacaoService = new LogTransacaoService(new LogTransacaoRepository(jdbc));
 
     public static void main(String[] args) {
         InicializadorDB.inicializar(conexaoDB);
@@ -124,11 +134,35 @@ public class Main {
 
             switch (opcao) {
                 case 1:
+                    Double valor = 0.0;
+                    String descricao = "";
+                    TipoTransacao tipo = null;
+                    Integer categoriaId = 0;
+                    String nomeCategoria = "";
+                    String descricaoCategoria = "";
                     System.out.println(">>> Cadastrar transação");
+                    System.out.println("Insira o valor da transação: ");
+                    valor = leitor.nextDouble();
+                    leitor.nextLine();
+                    LocalDateTime dataHora = LocalDateTime.now();
+                    System.out.println("Insira a descrição da transação: ");
+                    descricao = leitor.nextLine();
+                    System.out.println("Insira o tipo da transação: \n" +
+                            "1 - Receita \n" +
+                            "2 - Despesa \n");
+                    switch (leitor.nextInt()){
+                        case 1:
+                            tipo = TipoTransacao.DESPESA;
+                        case 2:
+                            tipo = TipoTransacao.RECEITA;
+                    }
+                    System.out.println("Insira a categoria da transação: ");
+                    transacaoService.cadastrarTransacao(new Transacao(valor, dataHora, descricao, new Categoria(nomeCategoria, descricaoCategoria), tipo));
                     pausar();
                     break;
                 case 2:
                     System.out.println(">>> Listar transações");
+                    System.out.println(transacaoService.listarTransacoes());
                     pausar();
                     break;
                 case 3:

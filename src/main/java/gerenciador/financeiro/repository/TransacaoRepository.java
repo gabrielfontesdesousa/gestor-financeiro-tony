@@ -15,7 +15,7 @@ public class TransacaoRepository {
     private ConexaoDB conexao = new ConexaoDB();
     private JdbcTemplate jdbcTemplate;
 
-    public TransacaoRepository(ConexaoDB conexao) {
+    public TransacaoRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = conexao.getJdbcTemplate();
     }
 
@@ -46,7 +46,6 @@ public class TransacaoRepository {
     public List<Transacao> listarTodas() {
         try {
             String sql = "SELECT * FROM transacao";
-
             List<Transacao> lista = jdbcTemplate.query(
                     sql,
                     new BeanPropertyRowMapper<>(Transacao.class)
@@ -64,23 +63,19 @@ public class TransacaoRepository {
     public Transacao buscarPorId(Integer id) {
         try {
             String sql = "SELECT * FROM transacao WHERE id = ?";
-
             return jdbcTemplate.queryForObject(
                     sql,
                     new BeanPropertyRowMapper<>(Transacao.class),
                     id
             );
-
         } catch (Exception e) {
             new LogTransacao(LocalDateTime.now(), e.getMessage(), StatusTransacao.FALHA);
             return null;
         }
     }
-
     public List<Transacao> listarPorTipo(TipoTransacao tipo) {
         try {
             String sql = "SELECT * FROM transacao WHERE tipo = ?";
-
             List<Transacao> lista = jdbcTemplate.query(
                     sql,
                     new BeanPropertyRowMapper<>(Transacao.class),

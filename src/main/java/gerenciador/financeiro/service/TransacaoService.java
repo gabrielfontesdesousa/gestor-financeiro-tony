@@ -11,8 +11,8 @@ public class TransacaoService {
 
     private TransacaoRepository repository;
 
-    public TransacaoService(ConexaoDB conexaoDB) {
-        this.repository = new TransacaoRepository(conexaoDB);
+    public TransacaoService(TransacaoRepository repository) {
+        this.repository = repository;
     }
 
     public void cadastrarTransacao(Transacao transacao) {

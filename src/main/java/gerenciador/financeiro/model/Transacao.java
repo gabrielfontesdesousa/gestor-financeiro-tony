@@ -100,7 +100,7 @@ public class Transacao {
                 ", descricao='" + descricao + '\'' +
                 ", categoria=" + categoria +
                 ", tipoTransacao=" + tipoTransacao +
-                ", categoriaId=" + categoriaId +
+                ", categoriaId=" + id +
                 '}';
     }
 }

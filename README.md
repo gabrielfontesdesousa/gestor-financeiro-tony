@@ -67,7 +67,7 @@ Responsabilidade:
 
 /*
 ========================================
-CLASSE: LogTransacaoRepository
+CLASSE: LogTransactionRepository
 PACOTE: repository
 ========================================
 Métodos:
@@ -157,7 +157,7 @@ Métodos:
 
 Responsabilidade:
 - Centralizar criação e consulta de logs
-- Chamar LogTransacaoRepository
+- Chamar LogTransactionRepository
 */
 
 
@@ -234,13 +234,12 @@ TransacaoRepository:
 - atualizar()
 - deletar()
 
-LogTransacaoRepository:
+LogTransactionRepository:
 - salvar()
 - listarTodos()
 - listarPorStatus()
 - listarPorTransacao()
 - deletar()
-
 MetaRepository:
 - salvar()
 - listarTodas()
