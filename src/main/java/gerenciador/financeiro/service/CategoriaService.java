@@ -11,6 +11,7 @@ public class CategoriaService {
     private final CategoriaRepository repository;
 
     public CategoriaService(CategoriaRepository repository) {
+
         this.repository = repository;
     }
 
@@ -18,7 +19,7 @@ public class CategoriaService {
         if (categoria.getNome() == null || categoria.getNome().isBlank()) {
             throw new RuntimeException("Nome da categoria é um campo obrigatorio!");
         }
-        if (categoria.getDesc() == null || categoria.getDesc().isBlank()) {
+        if (categoria.getDescricao() == null || categoria.getDescricao().isBlank()) {
             throw new RuntimeException("Descrição da categoria é um campo obrigatorio!");
         }
         if (categoria.getNome().length() < 3) {

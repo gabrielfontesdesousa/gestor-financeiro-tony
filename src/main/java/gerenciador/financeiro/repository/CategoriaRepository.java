@@ -15,17 +15,17 @@ public class CategoriaRepository {
 
     public void salvar(Categoria categoria) {
         String sql = "INSERT INTO categoria VALUES (DEFAULT, ?, ?);";
-        template.update(sql, categoria.getNome(), categoria.getDesc());
+        template.update(sql, categoria.getNome(), categoria.getDescricao());
     }
 
     public List<Categoria> listarTodas(){
-        String sql = "SELECT nome, descricao FROM categoria;";
+        String sql = "SELECT * FROM categoria;";
         List<Categoria> categoriaList = template.query(sql, new BeanPropertyRowMapper<>(Categoria.class));
         return categoriaList;
     }
 
     public Categoria buscarPorId(Integer id){
-        String sql = "SELECT nome, descricao FROM categoria WHERE id = ?";
+        String sql = "SELECT * FROM categoria WHERE id = ?";
         Categoria categoria = template.queryForObject(sql, new BeanPropertyRowMapper<>(Categoria.class), id);
         return categoria;
     }
@@ -39,7 +39,7 @@ public class CategoriaRepository {
 
     public void atualizar(Integer id, Categoria categoriaAtualizada){
         String sql = "UPDATE categoria SET nome = ?, descricao = ? WHERE id = ?";
-        template.update(sql,categoriaAtualizada.getNome(), categoriaAtualizada.getDesc(), id);
+        template.update(sql,categoriaAtualizada.getNome(), categoriaAtualizada.getDescricao(), id);
 
     }
 
