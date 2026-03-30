@@ -1,10 +1,7 @@
 package gerenciador.financeiro.model;
-
 import gerenciador.financeiro.enums.StatusTransacao;
 import gerenciador.financeiro.enums.TipoTransacao;
-
 import java.time.LocalDateTime;
-
 public class Transacao {
     private Integer id;
     private Double valor;
@@ -14,10 +11,8 @@ public class Transacao {
     private Categoria categoria;
     private TipoTransacao tipoTransacao;
     private Integer categoriaId;
-
     public Transacao() {
     }
-
     public Transacao(Double valor, LocalDateTime dtHora, String descricao, Categoria categoria, TipoTransacao tipoTransacao) {
         this.valor = valor;
         this.dtHora = dtHora;
@@ -25,27 +20,21 @@ public class Transacao {
         this.categoria = categoria;
         this.tipoTransacao = tipoTransacao;
     }
-
     public Integer getId() {
         return id;
     }
-
     public void setId(Integer id) {
         this.id = id;
     }
-
     public Double getValor() {
         return valor;
     }
-
     public void setValor(Double valor) {
         this.valor = valor;
     }
-
     public LocalDateTime getDtHora() {
         return dtHora;
     }
-
     public void setDtHora(LocalDateTime dtHora) {
         this.dtHora = dtHora;
     }
