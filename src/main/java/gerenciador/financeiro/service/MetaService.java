@@ -22,9 +22,6 @@ public class MetaService {
         if (meta.getValorAtual() < 0){
             throw new RuntimeException("O valor atual não pode ser negativo");
         }
-        if (!meta.getDtFinal().isAfter(LocalDate.now())){
-            throw new RuntimeException("Data final deve ser futura!");
-        }
         metaRepository.salvar(meta);
     }
 

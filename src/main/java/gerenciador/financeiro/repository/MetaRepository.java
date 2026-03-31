@@ -13,12 +13,12 @@ public class MetaRepository {
     }
 
     public void salvar(Meta meta) {
-        String sql = "INSERT INTO meta VALUES (DEFAULT, ?, ?, ?)";
-        template.update(sql, meta.getValorFinal(), meta.getValorAtual(), meta.getDtFinal());
+        String sql = "INSERT INTO meta VALUES (DEFAULT, ?, ?)";
+        template.update(sql, meta.getValorFinal(), meta.getValorAtual());
     }
 
     public List<Meta> listarTodas() {
-        String sql = "SELECT * FROM meta;";
+        String sql = "SELECT valor_meta, valor_atual FROM meta;";
         List<Meta> metaList = template.query(sql, new BeanPropertyRowMapper<>(Meta.class));
         return metaList;
     }
@@ -30,8 +30,8 @@ public class MetaRepository {
     }
 
     public void atualizar(Integer id, Meta metaAtualizada) {
-        String sql = "UPTADE meta SET valor_meta = ?, data_limite = ? WHERE id = ?";
-        template.update(sql, metaAtualizada.getValorFinal(), metaAtualizada.getDtFinal(), id);
+        String sql = "UPTADE meta SET valor_meta = ? WHERE id = ?";
+        template.update(sql, metaAtualizada.getValorFinal(), id);
     }
 
     public void atualizarProgresso(Integer id, Double novoValorAtual){

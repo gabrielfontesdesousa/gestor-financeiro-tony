@@ -7,10 +7,9 @@ public class Meta {
     private Double valorAtual;
     private LocalDate dtFinal;
 
-    public Meta(Double valorFinal, Double valorAtual, LocalDate dtFinal) {
+    public Meta(Double valorFinal, Double valorAtual) {
         this.valorFinal = valorFinal;
         this.valorAtual = valorAtual;
-        this.dtFinal = dtFinal;
     }
 
     public Double getValorFinal() {
@@ -21,9 +20,7 @@ public class Meta {
     public String toString() {
         return "Meta{" +
                 "valorFinal=" + valorFinal +
-                ", valorAtual=" + valorAtual +
-                ", dtFinal=" + dtFinal +
-                '}';
+                ", valorAtual=" + valorAtual + '}';
     }
 
     public void setValorFinal(Double valorFinal) {

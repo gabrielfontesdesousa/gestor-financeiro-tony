@@ -3,12 +3,15 @@ import gerenciador.financeiro.db.ConexaoDB;
 import gerenciador.financeiro.db.InicializadorDB;
 import gerenciador.financeiro.enums.TipoTransacao;
 import gerenciador.financeiro.model.Categoria;
+import gerenciador.financeiro.model.Meta;
 import gerenciador.financeiro.model.Transacao;
 import gerenciador.financeiro.repository.CategoriaRepository;
 import gerenciador.financeiro.repository.LogTransacaoRepository;
+import gerenciador.financeiro.repository.MetaRepository;
 import gerenciador.financeiro.repository.TransacaoRepository;
 import gerenciador.financeiro.service.CategoriaService;
 import gerenciador.financeiro.service.LogTransacaoService;
+import gerenciador.financeiro.service.MetaService;
 import gerenciador.financeiro.service.TransacaoService;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -24,6 +27,10 @@ public class Main {
     static CategoriaService categoriaService =
             new CategoriaService(
                     new CategoriaRepository(conexaoDB.getJdbcTemplate())
+            );
+    static MetaService metaService =
+            new MetaService(
+                    new MetaRepository(conexaoDB.getJdbcTemplate())
             );
 
 
@@ -249,8 +256,9 @@ public class Main {
             System.out.println("=================================");
             System.out.println("1 - Cadastrar meta");
             System.out.println("2 - Listar metas");
-            System.out.println("3 - Atualizar progresso");
-            System.out.println("4 - Deletar meta");
+            System.out.println("3 - Atualizar meta");
+            System.out.println("4 - Atualizar Progresso");
+            System.out.println("5 - Deletar meta");
             System.out.println("0 - Voltar");
             System.out.print("Escolha uma opção: ");
 
@@ -260,18 +268,64 @@ public class Main {
             switch (opcao) {
                 case 1:
                     System.out.println(">>> Cadastrar meta");
+                    System.out.println("Valor de Meta:");
+                    Double valorFinal = leitor.nextDouble();
+                    leitor.nextLine();
+                    System.out.println("Valor Atual:");
+                    Double valorAtual = leitor.nextDouble();
+                    leitor.nextLine();
+
+                    Meta meta = new Meta(valorFinal, valorAtual);
+                    metaService.cadastrarMeta(meta);
+                    System.out.println("Sua meta foi registrada com sucesso!");
                     pausar();
                     break;
                 case 2:
                     System.out.println(">>> Listar metas");
+                    metaService.listarMetas().forEach(m -> {
+                        System.out.println("Valor atual: " + m.getValorAtual());
+                        System.out.println("Valor final: " + m.getValorFinal());
+                        System.out.println("------------------");
+                    });
                     pausar();
                     break;
                 case 3:
-                    System.out.println(">>> Atualizar progresso da meta");
+                    System.out.println(">>> Atualizar meta");
+                    System.out.println("Informe o ID da meta a ser atualizada: ");
+                    int id = leitor.nextInt();
+                    leitor.nextLine();
+                    System.out.println("Novo valor da meta:");
+                    Double novaMeta = leitor.nextDouble();
+                    leitor.nextLine();
+                    meta = metaService.buscarMetaPorId(id);
+                    meta.setValorFinal(novaMeta);
+                    metaService.atualizarMeta(id, meta);
+                    System.out.println(meta.toString());
+                    System.out.println("Meta foi atualizada");
                     pausar();
                     break;
                 case 4:
+                    System.out.println(">>> Atualizar Progresso");
+                    System.out.println("Informe o ID da meta a ser atualizada: ");
+                     id = leitor.nextInt();
+                    leitor.nextLine();
+                    System.out.println("Novo valor da atual:");
+                    Double novoValor = leitor.nextDouble();
+                    leitor.nextLine();
+                    meta = metaService.buscarMetaPorId(id);
+                    meta.setValorFinal(novoValor);
+                    metaService.atualizarProgressoMeta(id, novoValor);
+                    System.out.println(meta.toString());
+                    System.out.println("Meta foi atualizada");
+                    pausar();
+                    break;
+                case 5:
                     System.out.println(">>> Deletar meta");
+                    System.out.println("Informe o ID da meta a ser deletada: ");
+                    id = leitor.nextInt();
+                    leitor.nextLine();
+                    metaService.removerMeta(id);
+                    System.out.println("Meta removida!");
                     pausar();
                     break;
                 case 0:
