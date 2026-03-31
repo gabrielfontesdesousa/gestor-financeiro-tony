@@ -1,4 +1,5 @@
 package gerenciador.financeiro;
+
 import gerenciador.financeiro.db.ConexaoDB;
 import gerenciador.financeiro.db.InicializadorDB;
 import gerenciador.financeiro.enums.TipoTransacao;
@@ -13,17 +14,20 @@ import gerenciador.financeiro.service.CategoriaService;
 import gerenciador.financeiro.service.LogTransacaoService;
 import gerenciador.financeiro.service.MetaService;
 import gerenciador.financeiro.service.TransacaoService;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     static Scanner leitor = new Scanner(System.in);
     static ConexaoDB conexaoDB = new ConexaoDB();
-    static JdbcTemplate jdbc;
-    static TransacaoService transacaoService = new TransacaoService( new TransacaoRepository(conexaoDB.getJdbcTemplate()));
-    static LogTransacaoService logTransacaoService = new LogTransacaoService(new LogTransacaoRepository(jdbc));
+
+    static TransacaoService transacaoService =
+            new TransacaoService(new TransacaoRepository(conexaoDB.getJdbcTemplate()));
+
     static CategoriaService categoriaService =
             new CategoriaService(
                     new CategoriaRepository(conexaoDB.getJdbcTemplate())
@@ -33,6 +37,9 @@ public class Main {
                     new MetaRepository(conexaoDB.getJdbcTemplate())
             );
 
+
+    // Formato padrão para entrada de data e hora pelo usuário
+    static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     public static void main(String[] args) {
         InicializadorDB.inicializar(conexaoDB);
@@ -57,15 +64,9 @@ public class Main {
             leitor.nextLine();
 
             switch (opcao) {
-                case 1:
-                    telaCategorias();
-                    break;
-                case 2:
-                    telaTransacoes();
-                    break;
-                case 3:
-                    telaMetas();
-                    break;
+                case 1: telaCategorias(); break;
+                case 2: telaTransacoes(); break;
+                case 3: telaMetas(); break;
                 case 0:
                     executando = false;
                     System.out.println("Saindo do sistema...");
@@ -104,10 +105,9 @@ public class Main {
                     String nome = leitor.nextLine();
                     System.out.println("Descrição: ");
                     String desc = leitor.nextLine();
-
                     Categoria categoria = new Categoria(nome, desc);
                     categoriaService.cadastrarCategoria(categoria);
-                    System.out.println("Categoria Registrada com sucesso!");
+                    System.out.println("Categoria registrada com sucesso!");
                     pausar();
                     break;
                 case 2:
@@ -151,7 +151,7 @@ public class Main {
                     categoria.setDescricao(novaDescricao);
                     categoriaService.atualizarCategoria(id, categoria);
                     System.out.println(categoria.toString());
-                    System.out.println("Categoria atualizada");
+                    System.out.println("Categoria atualizada!");
                     pausar();
                     break;
                 case 6:
@@ -172,6 +172,7 @@ public class Main {
             }
         }
     }
+
     public static void telaTransacoes() {
         boolean voltar = false;
 
@@ -193,49 +194,145 @@ public class Main {
 
             switch (opcao) {
                 case 1:
-                    Double valor = 0.0;
-                    String descricao = "";
-                    TipoTransacao tipo = null;
-                    Integer categoriaId = 0;
-                    String nomeCategoria = "";
-                    String descricaoCategoria = "";
                     System.out.println(">>> Cadastrar transação");
-                    System.out.println("Insira o valor da transação: ");
-                    valor = leitor.nextDouble();
+
+                    // Valor
+                    System.out.print("Valor da transação: ");
+                    Double valor = leitor.nextDouble();
                     leitor.nextLine();
-                    LocalDateTime dataHora = LocalDateTime.now();
-                    System.out.println("Insira a descrição da transação: ");
-                    descricao = leitor.nextLine();
-                    System.out.println("Insira o tipo da transação: \n" +
-                            "1 - Receita \n" +
-                            "2 - Despesa \n");
-                    switch (leitor.nextInt()){
-                        case 1:
-                            tipo = TipoTransacao.DESPESA;
-                        case 2:
-                            tipo = TipoTransacao.RECEITA;
+
+                    // Descrição
+                    System.out.print("Descrição: ");
+                    String descricao = leitor.nextLine();
+
+                    // Tipo
+                    System.out.println("Tipo da transação:");
+                    System.out.println("  1 - Receita");
+                    System.out.println("  2 - Despesa");
+                    System.out.print("Escolha: ");
+                    int tipoOpcao = leitor.nextInt();
+                    leitor.nextLine();
+                    String tipo = (tipoOpcao == 1) ? "RECEITA": "DESPESA";
+
+                    // Data e hora — com opção de usar a atual ou digitar manualmente
+                    LocalDateTime dataHora = null;
+                    System.out.println("Data e hora:");
+                    System.out.println("  1 - Usar data e hora atual (" +
+                            LocalDateTime.now().format(formatter) + ")");
+                    System.out.println("  2 - Digitar manualmente (formato: dd/MM/yyyy HH:mm)");
+                    System.out.print("Escolha: ");
+                    int dataOpcao = leitor.nextInt();
+                    leitor.nextLine();
+
+                    if (dataOpcao == 1) {
+                        dataHora = LocalDateTime.now();
+                    } else {
+                        boolean dataValida = false;
+                        while (!dataValida) {
+                            System.out.print("Informe a data e hora (dd/MM/yyyy HH:mm): ");
+                            String dataInput = leitor.nextLine();
+                            try {
+                                dataHora = LocalDateTime.parse(dataInput, formatter);
+                                dataValida = true;
+                            } catch (DateTimeParseException e) {
+                                System.out.println("Formato inválido! Use dd/MM/yyyy HH:mm (ex: 25/03/2025 14:30)");
+                            }
+                        }
                     }
-                    System.out.println("Insira a categoria da transação: ");
-                    transacaoService.cadastrarTransacao(new Transacao(valor, dataHora, descricao, new Categoria(nomeCategoria, descricaoCategoria), tipo));
+
+                    // Categoria — lista as disponíveis para o usuário escolher pelo ID
+                    System.out.println("\nCategorias disponíveis:");
+                    List<Categoria> categorias = categoriaService.listarCategorias();
+
+                    if (categorias == null || categorias.isEmpty()) {
+                        System.out.println("Nenhuma categoria cadastrada. Cadastre uma categoria primeiro.");
+                        pausar();
+                        break;
+                    }
+
+                    categorias.forEach(c ->
+                            System.out.println("  [" + c.getId() + "] " + c.getNome() + " - " + c.getDescricao())
+                    );
+
+                    System.out.print("Informe o ID da categoria: ");
+                    Integer categoriaId = leitor.nextInt();
+                    leitor.nextLine();
+
+                    // Valida se a categoria existe
+                    Categoria categoriaSelecionada = categoriaService.buscarCategoriaPorId(categoriaId);
+                    if (categoriaSelecionada == null) {
+                        System.out.println("Categoria não encontrada. Transação não cadastrada.");
+                        pausar();
+                        break;
+                    }
+
+                    // Monta e salva a transação
+                    Transacao transacao = new Transacao(valor, dataHora, descricao, tipo, categoriaId);
+                    transacaoService.cadastrarTransacao(transacao);
                     pausar();
                     break;
+
                 case 2:
                     System.out.println(">>> Listar transações");
-                    System.out.println(transacaoService.listarTransacoes());
+                    List<Transacao> lista = transacaoService.listarTransacoes();
+                    if (lista == null || lista.isEmpty()) {
+                        System.out.println("Nenhuma transação cadastrada.");
+                    } else {
+                        lista.forEach(t -> {
+                            System.out.println("ID: " + t.getId());
+                            System.out.println("Valor: R$ " + t.getValor());
+                            System.out.println("Data/Hora: " + (t.getDtHora() != null
+                                    ? t.getDtHora().format(formatter) : "não informada"));
+                            System.out.println("Descrição: " + t.getDescricao());
+                            System.out.println("Tipo: " + t.getTipoTransacao());
+                            System.out.println("Status: " + t.getStatus());
+                            System.out.println("Categoria ID: " + t.getCategoriaId());
+                            System.out.println("------------------");
+                        });
+                    }
                     pausar();
                     break;
+
                 case 3:
                     System.out.println(">>> Buscar transação por ID");
+                    System.out.print("Informe o ID: ");
+                    Integer id = leitor.nextInt();
+                    leitor.nextLine();
+                    Transacao encontrada = transacaoService.buscarTransacaoPorId(id);
+                    if (encontrada != null) {
+                        System.out.println("ID: " + encontrada.getId());
+                        System.out.println("Valor: R$ " + encontrada.getValor());
+                        System.out.println("Data/Hora: " + (encontrada.getDtHora() != null
+                                ? encontrada.getDtHora().format(formatter) : "não informada"));
+                        System.out.println("Descrição: " + encontrada.getDescricao());
+                        System.out.println("Tipo: " + encontrada.getTipoTransacao());
+                        System.out.println("Categoria ID: " + encontrada.getCategoriaId());
+                    } else {
+                        System.out.println("Transação não encontrada.");
+                    }
                     pausar();
                     break;
+
                 case 4:
                     System.out.println(">>> Listar transações por tipo");
+                    System.out.println("  1 - Receita  |  2 - Despesa");
+                    System.out.print("Escolha: ");
+                    int filtroOpcao = leitor.nextInt();
+                    leitor.nextLine();
+                    TipoTransacao filtro = (filtroOpcao == 1) ? TipoTransacao.RECEITA : TipoTransacao.DESPESA;
+                    System.out.println(transacaoService.listarTransacoes().toString());
                     pausar();
                     break;
+
                 case 5:
                     System.out.println(">>> Deletar transação");
+                    System.out.print("Informe o ID: ");
+                    Integer idDel = leitor.nextInt();
+                    leitor.nextLine();
+                    transacaoService.removerTransacao(idDel);
                     pausar();
                     break;
+
                 case 0:
                     voltar = true;
                     break;

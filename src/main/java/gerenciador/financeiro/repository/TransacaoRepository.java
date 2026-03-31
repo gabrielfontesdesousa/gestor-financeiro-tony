@@ -1,6 +1,5 @@
 package gerenciador.financeiro.repository;
 
-import gerenciador.financeiro.db.ConexaoDB;
 import gerenciador.financeiro.enums.StatusTransacao;
 import gerenciador.financeiro.enums.TipoTransacao;
 import gerenciador.financeiro.model.LogTransacao;
@@ -12,28 +11,28 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class TransacaoRepository {
-    private ConexaoDB conexao = new ConexaoDB();
+
     private JdbcTemplate jdbcTemplate;
 
     public TransacaoRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = conexao.getJdbcTemplate();
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public void salvar(Transacao transacao) {
         try {
+            // CORRIGIDO: inclui data_hora e categoria_id no INSERT
             String sql = """
-                    INSERT INTO transacao (valor, data_hora, status, descricao, tipo, categoria_id)
-                    VALUES (?, ?, ?, ?, ?, ?)
+                    INSERT INTO transacao (valor, data_hora, descricao, tipo, categoria_id)
+                    VALUES (?, ?, ?, ?, ?)
                     """;
 
             jdbcTemplate.update(
                     sql,
                     transacao.getValor(),
                     transacao.getDtHora(),
-                    transacao.getStatus().name(),
                     transacao.getDescricao(),
-                    transacao.getTipoTransacao().name(),
-                    transacao.getCategoria().getId()
+                    transacao.getTipoTransacao(),
+                    transacao.getCategoriaId()
             );
 
             new LogTransacao(LocalDateTime.now(), "INSERT SUCCESS", StatusTransacao.OPERACAO_CONCLUIDA);
@@ -73,6 +72,7 @@ public class TransacaoRepository {
             return null;
         }
     }
+
     public List<Transacao> listarPorTipo(TipoTransacao tipo) {
         try {
             String sql = "SELECT * FROM transacao WHERE tipo = ?";
@@ -94,7 +94,6 @@ public class TransacaoRepository {
     public List<Transacao> listarPorCategoria(Integer categoriaId) {
         try {
             String sql = "SELECT * FROM transacao WHERE categoria_id = ?";
-
             List<Transacao> lista = jdbcTemplate.query(
                     sql,
                     new BeanPropertyRowMapper<>(Transacao.class),
@@ -124,8 +123,8 @@ public class TransacaoRepository {
                     transacao.getDtHora(),
                     transacao.getStatus().name(),
                     transacao.getDescricao(),
-                    transacao.getTipoTransacao().name(),
-                    transacao.getCategoria().getId(),
+                    transacao.getTipoTransacao(),
+                    transacao.getCategoriaId(),
                     transacao.getId()
             );
 
@@ -139,7 +138,6 @@ public class TransacaoRepository {
     public boolean deletar(Integer id) {
         try {
             String sql = "DELETE FROM transacao WHERE id = ?";
-
             jdbcTemplate.update(sql, id);
 
             new LogTransacao(LocalDateTime.now(), "DELETE SUCCESS", StatusTransacao.OPERACAO_CONCLUIDA);
