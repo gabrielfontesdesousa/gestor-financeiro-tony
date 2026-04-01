@@ -4,7 +4,6 @@ import gerenciador.financeiro.model.Meta;
 import gerenciador.financeiro.repository.MetaRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public class MetaService {
@@ -16,7 +15,7 @@ public class MetaService {
     }
 
     public void cadastrarMeta(Meta meta){
-        if (meta.getValorFinal() <= 0){
+        if (meta.getValorMeta() <= 0){
             throw new RuntimeException("A meta não pode ser um valor negativo ou igual a zero");
         }
         if (meta.getValorAtual() < 0){
@@ -27,7 +26,7 @@ public class MetaService {
 
     public List<Meta> listarMetas(){
         if (metaRepository.listarTodas().isEmpty()){
-            throw new RuntimeException("Não existem categorias cadastradas");
+            throw new RuntimeException("Não existem metas cadastradas");
         }
         return metaRepository.listarTodas();
     }
@@ -42,7 +41,7 @@ public class MetaService {
     }
 
     public void atualizarMeta(Integer id, Meta meta){
-        if (meta.getValorFinal() <= meta.getValorAtual()){
+        if (meta.getValorMeta() <= meta.getValorAtual()){
             throw new RuntimeException("Meta não pode ser inferior ou igual ao valor atual!");
         }
         metaRepository.atualizar(id, meta);

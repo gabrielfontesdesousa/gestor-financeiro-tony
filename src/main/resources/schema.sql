@@ -38,5 +38,5 @@ CREATE TABLE meta
     id          INT AUTO_INCREMENT PRIMARY KEY,
     valor_meta  DECIMAL(10, 2) NOT NULL,
     valor_atual DECIMAL(10, 2) NOT NULL,
-    data_limite DATE           NOT NULL
+    data_limite DATE
 );

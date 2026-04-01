@@ -7,11 +7,9 @@ import gerenciador.financeiro.model.Categoria;
 import gerenciador.financeiro.model.Meta;
 import gerenciador.financeiro.model.Transacao;
 import gerenciador.financeiro.repository.CategoriaRepository;
-import gerenciador.financeiro.repository.LogTransacaoRepository;
 import gerenciador.financeiro.repository.MetaRepository;
 import gerenciador.financeiro.repository.TransacaoRepository;
 import gerenciador.financeiro.service.CategoriaService;
-import gerenciador.financeiro.service.LogTransacaoService;
 import gerenciador.financeiro.service.MetaService;
 import gerenciador.financeiro.service.TransacaoService;
 
@@ -371,7 +369,6 @@ public class Main {
                     System.out.println("Valor Atual:");
                     Double valorAtual = leitor.nextDouble();
                     leitor.nextLine();
-
                     Meta meta = new Meta(valorFinal, valorAtual);
                     metaService.cadastrarMeta(meta);
                     System.out.println("Sua meta foi registrada com sucesso!");
@@ -381,7 +378,7 @@ public class Main {
                     System.out.println(">>> Listar metas");
                     metaService.listarMetas().forEach(m -> {
                         System.out.println("Valor atual: " + m.getValorAtual());
-                        System.out.println("Valor final: " + m.getValorFinal());
+                        System.out.println("Valor final: " + m.getValorMeta());
                         System.out.println("------------------");
                     });
                     pausar();
@@ -395,7 +392,7 @@ public class Main {
                     Double novaMeta = leitor.nextDouble();
                     leitor.nextLine();
                     meta = metaService.buscarMetaPorId(id);
-                    meta.setValorFinal(novaMeta);
+                    meta.setValorMeta(novaMeta);
                     metaService.atualizarMeta(id, meta);
                     System.out.println(meta.toString());
                     System.out.println("Meta foi atualizada");
@@ -410,7 +407,7 @@ public class Main {
                     Double novoValor = leitor.nextDouble();
                     leitor.nextLine();
                     meta = metaService.buscarMetaPorId(id);
-                    meta.setValorFinal(novoValor);
+                    meta.setValorMeta(novoValor);
                     metaService.atualizarProgressoMeta(id, novoValor);
                     System.out.println(meta.toString());
                     System.out.println("Meta foi atualizada");
